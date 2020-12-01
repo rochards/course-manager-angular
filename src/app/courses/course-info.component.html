@@ -1,0 +1,61 @@
+<h2>Course Info</h2>
+
+<!--
+    *ngIf="course" -> a chamada em course-info.component.ts é assíncrona,
+    assim o formulário acaba carregando antes msm de ter dados no objeto course,
+    gerando erro. Para resolver essa questão, a gente usa a diretiva *ngIf, para
+    o formulário só carregar se já tiver dados em course
+-->
+<form #courseForm="ngForm" *ngIf="course"> <!--#courseForm variável de template-->
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+            <input [(ngModel)]="course.name" type="text" class="form-control" name="name"
+            #courseName="ngModel" required [ngClass]="{'is-invalid':courseName.invalid}">
+            <!--
+                - required -> significa que não posso fornecer uma string vazia
+                - courseName -> me possibilita utilizar métodos especiais
+                - [ngClass]="{'is-invalid':courseName.invalid}" -> vou adicionar a classe do bootstrap
+                'is-invalid' a condição após o : seja verdadeira
+            -->
+            <!--
+                Essa classe é do bootstrap.
+                Ela funciona em conjunto com o ngClass definido acima
+            -->
+            <div class="invalid-feedback"> 
+                <span>Course name is required</span>
+            </div>
+        </div>
+        <label class="col-sm-2 col-form-label">Price</label>
+        <div class="col-sm-10">
+            <input [(ngModel)]="course.price" type="text" class="form-control" name="price"
+            #coursePrice="ngModel" required [ngClass]="{'is-invalid':coursePrice.invalid}">
+            <div class="invalid-feedback"> 
+                <span>Course price is required</span>
+            </div>
+        </div>
+        <label class="col-sm-2 col-form-label">Rating</label>
+        <div class="col-sm-10">
+            <input [(ngModel)]="course.rating" type="number" class="form-control" name="rating"
+            #courseRating="ngModel" required [ngClass]="{'is-invalid':courseRating.invalid}">
+            <div class="invalid-feedback"> 
+                <span>Course rate is required</span>
+            </div>
+        </div>
+        <label class="col-sm-2 col-form-label">Description</label>
+        <div class="col-sm-10">
+            <textarea [(ngModel)]="course.description" type="text" class="form-control" name="description"
+            #courseDescription="ngModel" required [ngClass]="{'is-invalid':courseDescription.invalid}"></textarea>
+            <div class="invalid-feedback"> 
+                <span>Course description is required</span>
+            </div>
+        </div>
+    </div>
+    <!--
+        Meu botão só vai ser habilitado se todos os meus campos
+        require do formulário estiverem devidamente preenchidos
+    -->
+    <button [disabled]="courseForm.invalid" class="btn btn-primary mr-2"
+    (click)="save()">Save</button>
+    <button class="btn btn-secondary" routerLink='/courses'>Back</button>
+</form>
